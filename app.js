@@ -1,12 +1,12 @@
-const request = require("postman-request");
+const geocode = require("./utils/geocode");
+const forecast = require("./utils/forecast");
 
-const url = "http://api.weatherstack.com/current?access_key=2670b2c70f622d22eaf4f43ec93a2af3&query=37.8267,-122.4233&units=f";
+geocode("Columbia maryland", (error, data) => {
+    console.log("Error:", error);
+    console.log("Data:", data);
+});
 
-request({ url: url, json: true }, (error, response) => {
-    const weather = response.body.current;
-    if (!error) {
-        console.log(weather.weather_descriptions[0] + ". It is currently " + weather.temperature + " degrees out. It feels like " + weather.feelslike + " degrees out. There is a " + weather.precip + "% chance of rain.");
-    } else {
-        console.log(error);
-    }
+forecast(-75.7088, 44.1545, (error, data) => {
+    console.log('Error:', error)
+    console.log('Data:', data)
 });
