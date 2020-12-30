@@ -1,12 +1,24 @@
 const geocode = require("./utils/geocode");
 const forecast = require("./utils/forecast");
 
-geocode("Columbia maryland", (error, data) => {
-    console.log("Error:", error);
-    console.log("Data:", data);
-});
+// Store location passed in from user in command line
+const location = process.argv[2];
 
-forecast(-75.7088, 44.1545, (error, data) => {
-    console.log('Error:', error)
-    console.log('Data:', data)
-});
+// If user passed in location, pass location into geocode function and retrieve weather data. Else, print error requiring location
+if (location) {
+    geocode(location, (geoError, { latitude, longitude, location } = {}) => {
+        if (geoError) {
+            return console.log(geoError);
+        }
+    
+        forecast(latitude, longitude, (forecastError, forecastData) => {
+            if (forecastError) {
+                return console.log(forecastError);
+            }
+            console.log(location);
+            console.log(forecastData);
+        });
+    });
+} else {
+    console.log("ERROR - Please provide a location.");
+}
